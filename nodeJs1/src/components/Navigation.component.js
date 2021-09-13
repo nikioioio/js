@@ -23,17 +23,12 @@ function tabClickHandler(event){
             tab.classList.remove('active');
         })
 
-        event.target.classList.add('active')
+        event.target.classList.add('active');
     }
 
-    this.tabs.forEach(el => {
-        el.component.$el.classList.add('hide')
-    })
+    this.tabs.forEach(el => el.component.hide());
 
-    this.tabs.find(el => {
-        if (el.name === event.target.dataset.name){
-            el.component.$el.classList.remove('hide')
-        }
-    })
+    const activeTab = this.tabs.find(el => el.name === event.target.dataset.name);
+    activeTab.component.show();
 
 }
