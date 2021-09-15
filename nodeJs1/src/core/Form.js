@@ -11,6 +11,10 @@ export class Form {
         return values
     }
 
+    clear() {
+        Object.keys(this.controls).forEach(el => this.form[el].value = '' )
+    }
+
     isValid(){
         let isFormValid = true;
 
@@ -23,9 +27,8 @@ export class Form {
                 isValid = validator(this.form[control].value) && isValid
             } )
 
-            if (!isValid){
-                setError(this.form[control])
-            }
+            !isValid ? setError(this.form[control]) : clearError(this.form[control])
+
             isFormValid = isValid && isFormValid ? true : false
         } )
 
@@ -35,7 +38,18 @@ export class Form {
 
 
 function setError($element){
-    const errorMessage = '<p class="validation-error">Введите корректные двнные</p>';
+    clearError($element)
+    const errorMessage = '<p class="validation-error">Введите корректные данные</p>';
     $element.classList.add('invalid');
     $element.insertAdjacentHTML('afterend',errorMessage)
+}
+
+function clearError($element){
+    $element.classList.remove('invalid');
+
+    if ($element.nextSibling) {
+        $element.closest('.form-control').removeChild($element.nextSibling)
+    }
+    //Родитель первый по иерерархии
+
 }
